@@ -407,6 +407,13 @@ def main():
     n_drugs = len(drug_ids)
     n_diseases = len(disease_ids)
 
+    if pos_edge_index.size(1) == 0:
+        print("[ERROR] 正例エッジ(TREATS/CANDIDATE_FOR)が0件です。")
+        print("        setup_drkg_neo4j.py を再実行してください。")
+        return
+
+    print(f"  正例エッジ数: {pos_edge_index.size(1)}")
+
     EPOCHS = 200
     best_auc = 0
     for epoch in range(1, EPOCHS + 1):

@@ -155,8 +155,15 @@ def create_edges(driver):
     with driver.session() as session:
         for src, dst, rel, props in EDGES:
             # ノードラベル推定
-            src_label = "Drug" if src.startswith("D") else ("Target" if src.startswith("T") else "Disease")
-            dst_label = "Drug" if dst.startswith("D") else ("Target" if dst.startswith("T") else "Disease")
+            def _label(nid):
+                if nid.startswith("DIS"):
+                    return "Disease"
+                elif nid.startswith("D"):
+                    return "Drug"
+                else:
+                    return "Target"
+            src_label = _label(src)
+            dst_label = _label(dst)
 
             props_str = ", ".join(f"{k}: ${k}" for k in props)
             query = (
